@@ -1,0 +1,61 @@
+<div>
+    <%- include("../encabezado"); %>
+</div>
+
+<div style="margin-left: 10px;">
+    <br><br>
+    <h3>Listado de empleados</h3>
+    <a href="sincronizar/empleado" type="button" class="btn btn-success">Sincronizar</a>
+<br>
+<% if(mensaje) { %>
+    <% if(mensaje != "actualizar") { %>
+        <div class="alert alert-danger" role="alert" id="alerta">
+                <strong><%= mensaje %></strong><br>         
+        </div>
+    <% } %>
+    <% if(mensaje == "actualizar") { %>
+        <script>
+            window.onload = function () {
+                location.href="/configuracion/empleados";
+            }
+        </script>
+    <% } %>
+<% } %>
+
+    <table id="datatable" class="table">
+        <thead>
+            <tr>
+                <th style="text-align: left;">N°</th>
+                <th style="text-align: left;">Nombre</th>
+                <th style="text-align: center;">Identidad</th>
+                <th style="text-align: center;">Departamento</th>
+                <th style="text-align: center;">Puesto de trabajo</th>
+                <th style="text-align: center;">Fecha de nacimiento</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% lista.forEach(datos=>{ %>
+                <tr>
+                    <td><%= datos.fila %></td>
+                    <td><%= datos.name %></td>
+                    <td style="text-align: center;"><%= datos.identity %></td>
+                    <td style="text-align: center;"><%= datos.name_department %></td>
+                    <td style="text-align: center;"><%= datos.name_job %></td>
+                    <td style="text-align: center;"><%= datos.birthday.getFullYear() %>/<%= datos.birthday.getMonth() + 1 %>/<%= datos.birthday.getDate() %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+    <style>
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        a:hover{
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+
+</div>

@@ -1,0 +1,56 @@
+<div>
+    <%- include("../encabezado"); %>
+</div>
+
+<div style="margin-left: 10px;">
+    <br><br>
+    <h3>Listado de actividades</h3>
+    <a href="sincronizar/actividad" type="button" class="btn btn-success">Sincronizar</a>
+<br>
+<% if(mensaje) { %>
+    <% if(mensaje != "actualizar") { %>
+        <div class="alert alert-danger" role="alert" id="alerta">
+                <strong><%= mensaje %></strong><br>         
+        </div>
+    <% } %>
+    <% if(mensaje == "actualizar") { %>
+        <script>
+            window.onload = function () {
+                location.href="/configuracion/actividades";
+            }
+        </script>
+    <% } %>
+<% } %>
+    <table id="datatable" class="table">
+        <thead>
+            <tr>
+                <th style="text-align: left;">N°</th>
+                <th style="text-align: left;">Nombre</th>
+                <th style="text-align: center;">Cuota</th>
+                <th style="text-align: center;">Tipo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% lista.forEach(datos=>{ %>
+                <tr>
+                    <td><%= datos.fila %></td>
+                    <td><%= datos.name %></td>
+                    <td style="text-align: center;"><%= (Math.round(datos.rate *100))/100 %></td>
+                    <td style="text-align: center;"><%= datos.dia %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+    <style>
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        a:hover{
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+
+</div>

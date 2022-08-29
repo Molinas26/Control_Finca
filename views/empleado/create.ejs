@@ -1,0 +1,230 @@
+<div>
+    <%- include("../encabezado"); %>
+</div>
+
+<style>
+    .btn{
+        font-size: 10px;
+        background-color: rgb(11, 107, 83);
+        color: white; 
+        width: 100px;
+    }
+    .tex{
+        font-size: 14px;
+        color: rgb(11, 107, 83);
+        text-decoration: none;
+    }
+    .card-body{
+        margin-top: -10px !important;
+        margin-bottom: -10px !important;
+    }
+</style>
+
+<form action="/empleado/create" method="POST" name="formulario1" autocomplete="off">
+    <div class="card">
+        <div class="card-body">
+            <label for="" style="color: rgb(11, 107, 83);">Carga Diaria</label>
+            <br>
+            <button type="button" onclick="validar()" class="btn" >GUARDAR</button>
+            <a href="/empleado/pendiente" class="tex"><strong>DESCARTAR</strong></a>
+        </div>
+    </div>
+
+    <% if(typeof mensaje != 'undefined'){%>
+        <script>
+            setInterval('ocultar()', 5000);
+            function ocultar(){
+                document.getElementById('alerta').style.visibility="hidden";
+            }
+        </script>
+        <div class="alert alert-danger" role="alert" id="alerta">
+        <% mensaje.forEach((validacion) => { %>
+            <strong><%= validacion %></strong><br>         
+        <% })%>
+    </div>
+    <% }else{%>
+        <br><br>
+    <% } %>
+    <div class="alert alert-danger" role="alert" id="alerta2" style="display: none;">
+        <label for="" id="textomensaje"></label>
+    </div>
+
+    <div style="width: 60%;margin-left: 20%;">
+        <div class="card">
+            <div class="card-body" style="height: 100%;">
+              
+                <div style="width: 50%;float: left;">
+                    <div>
+                        <label for="" style="line-height: 30px;">Empleado</label> 
+                        <input style="width: 70%;float: right; margin-right: 10px;" list="employee" 
+                        name="empleado" id="empleado" class="form-select" value="">
+    
+                        <datalist id="employee">
+                            <option style="display: none;" value=""></option>
+                            <% employee.forEach(datos=>{ %>
+                                <Option value="<%= datos.name %>"></Option>
+                            <% }) %>
+                        </datalist>
+                    </div> 
+                    <br>
+                    <div>
+                        <label for="" style="line-height: 30px;"> Responsable</label> 
+                        <input style="width: 70%;float: right; margin-right: 10px;" readonly value="<%= user.name%>" 
+                        name="usuario" id="usuario" class="form-control">
+                    </div>
+                </div>
+    
+                <div style="width: 50%;float: right;">
+                    <div>
+                        <label for="" style="line-height: 30px;">Fecha</label> 
+                        <input type="date" style="width: 70%;float: right; margin-right: 10px;" class="form-select" name="fecha" id="fecha"
+                        min="<%= mayor.mayor_fecha.getFullYear() %>-<%= String(mayor.mayor_fecha.getMonth() + 1).padStart(2, '0') %>-<%= String(mayor.mayor_fecha.getDate()).padStart(2, '0') %>">
+                    </div>
+                    <br> 
+
+                    <div style="display: none;" id="horas">
+                        <label for="" style="line-height: 30px;">Horas trabajadas</label> 
+                        <input type="number" name="hora" id="hora" value="0" class="form-control"
+                        style="width: 50%;float: right; margin-right: 10px;">
+                    </div> 
+                </div>
+    <br><br><br><br>
+    <input style="display: none;" type="number" id="fila" name="fila" value="0">
+                <table id="table_employee" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%;text-align: center;">Eliminar</th>
+                            <th style="width: 40%;text-align: center;">Actividad</th>
+                            <th style="width: 20%;text-align: center;">Cantidad</th>
+                            <th style="width: 20%;text-align: center;">Hora</th>
+                            <th style="width: 15%;text-align: center;">Tarifa</th>
+                            <th style="width: 20%;text-align: center;">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="6" style="color:rgb(11, 107, 83)" onclick="agregarFila()">añadir elemento</td>
+                            
+                        </tr>
+                    </tbody>
+                </table>            
+            </div>
+          </div>
+          <datalist id="activity">
+            <% actividad.forEach(datos=>{ %>
+                <Option value="<%= datos.name %>"></Option>
+            <% }) %>
+        </datalist>
+          <script>
+              function deleteRow(r)
+                {
+                var i=r.parentNode.parentNode.rowIndex
+                document.getElementById('table_employee').deleteRow(i)
+                }
+              function agregarFila(){
+                var rc = $("#table_employee tr").length;
+                var rowCount = rc-1;
+                document.getElementById("table_employee").insertRow(rowCount).innerHTML = '<td><input type="button" value = "X" onclick = "deleteRow (this)" style="background-color: red;border-radius: 7px;border: none;color: white;"></td><td id="acti['+rowCount+']"><input onchange="rellenar('+rowCount+')" list="activity" name="actividad'+rowCount+'" id="actividad['+rowCount+']" class="form-select"></td><td id="cant['+rowCount+']" name="cant'+rowCount+'"><input type="number" disabled onkeyup="calcular('+rowCount+')"  name="cantidad'+rowCount+'" id="cantidad['+rowCount+']" class="form-control"></td><td  id="hour['+rowCount+']" name="hour'+rowCount+'"><input type="number" onkeyup="calcular('+rowCount+')" name="hora'+rowCount+'" id="hora['+rowCount+']" disabled class="form-control"></td><td style="text-align: right;" id="tari['+rowCount+']"></td><td style="text-align: right;" id="tot['+rowCount+']"></td>';
+                document.getElementById('fila').value = rowCount;
+            }
+    
+            function rellenar(row){
+                var valor=document.getElementById('actividad['+row+']').value;
+                <% actividad.forEach(datos2=>{ %>
+                    
+                    if ('<%= datos2.name %>' == valor) {
+                        document.getElementById('tari['+row+']').innerHTML = '<%= (Math.round(datos2.rate *100))/100 %>';
+                        var precio = <%= datos2.rate %>;
+                        
+                    if ('<%= datos2.dia %>' == 'produccion') {
+                        document.getElementById('hora['+row+']').value = '';
+                        document.getElementById('cantidad['+row+']').disabled = false;
+                        document.getElementById('hora['+row+']').disabled = true;
+                    }else{
+
+                        document.getElementById('cantidad['+row+']').value = '';
+                        document.getElementById('hora['+row+']').disabled = false;
+                        document.getElementById('cantidad['+row+']').disabled = true;
+                    }
+
+                    var cantidad=document.getElementById('cantidad['+row+']').value;
+                    var hora=document.getElementById('hora['+row+']').value;
+                    if (cantidad != '') {
+                        var total = (Math.round((precio * cantidad) *100))/100;
+                        document.getElementById('tot['+row+']').innerHTML = total;
+                    } else {
+                        if (hora != '') {
+                            var total = (Math.round((precio * hora) *100))/100;
+                            document.getElementById('tot['+row+']').innerHTML = total;
+                        }
+                    }
+
+                    }
+                <% }) %>
+    
+                var cantidad=document.getElementById('cantidad['+row+']').value;
+                if(cantidad > 0){
+                    calcular(row);
+                }
+
+                document.getElementById('fila').innerHTML = row;
+            }
+    
+            function calcular(row){
+                var cantidad=document.getElementById('cantidad['+row+']').value;
+                var hora=document.getElementById('hora['+row+']').value;
+                var valor=document.getElementById('actividad['+row+']').value;
+                <% actividad.forEach(datos2=>{ %>
+                    
+                    if ('<%= datos2.name %>' == valor) {
+                        var precio = <%= datos2.rate %>;
+                    }
+                <% }) %>
+    
+
+                if (cantidad == '') {
+                    var total = (Math.round((precio * hora) *100))/100;
+                } else {
+                    var total = (Math.round((precio * cantidad) *100))/100;
+                }
+
+                
+                document.getElementById('tot['+row+']').innerHTML = total;
+
+                document.getElementById('fila').innerHTML = row;
+            }
+
+            function validar(){
+                var empleado=document.getElementById('empleado').value;
+                var fecha=document.getElementById('fecha').value;
+                document.getElementById('textomensaje').innerHTML = "";
+                document.getElementById('alerta2').style.display = 'block';
+                var err = 0;
+
+                if (empleado == '') {
+                    document.getElementById('textomensaje').innerHTML += "El empleado no puede estar vacio<br>";
+                    err++;
+                }else{
+                    var ne =0;
+                    <% employee.forEach(datos=>{ %>
+                        if ('<%= datos.name %>' == empleado) {
+                            ne = 1;
+                        }
+                    <% }) %>
+                        if (ne == 0) {
+                            document.getElementById('textomensaje').innerHTML += "El empleado no existe<br>";
+                            err++;
+                        }
+                }
+                if (fecha == '') {
+                    document.getElementById('textomensaje').innerHTML += "La fecha no puede estar vacio<br>";
+                    err++;
+                }
+                if(err == 0){
+                    document.formulario1.submit();
+                }
+                
+            }
+          </script>
+    </div>
+</form>

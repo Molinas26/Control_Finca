@@ -1,0 +1,122 @@
+<div>
+    <%- include("../encabezado"); %>
+</div>
+
+
+
+<style>
+    
+    .btn{
+        font-size: 10px;
+        background-color: rgb(11, 107, 83);
+        color: white; 
+        width: 100px;
+    }
+    .tex{
+        font-size: 14px;
+        color: rgb(11, 107, 83);
+        text-decoration: none;
+    }
+    .card-body{
+        margin-top: -10px !important;
+        margin-bottom: -10px !important;
+    }
+    
+</style>
+
+    <div class="card">
+        <div class="card-body">
+            <label for="" style="color: rgb(11, 107, 83);">Carga Diaria</label> <label for="" style="color: gray;">/ <%= daily.name%></label>
+            <br>
+            <a type="button" style="float: left" class="btn" href="/empleado/create" >CREAR</a>
+            &nbsp;&nbsp;
+            <a href="/empleado/pendiente" class="tex" ><strong>REGRESAR</strong></a>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <% if(daily.state == 0) {%>
+            <a type="button" style="float: left" class="btn" href="/empleado/editar/<%= daily.id%>" >EDITAR </a>
+            <% } %>
+            <div style="float:right">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <% if(daily.state == 0) {%>
+                            <a class="nav-link active"><strong>Borrador</strong></a>
+                        <% }else{ %>
+                            <a class="nav-link disabled">Borrador</a>
+                        <% } %>
+                    </li>
+                    <li class="nav-item">
+                        <% if(daily.state == 1) {%>
+                            <a class="nav-link active"><strong>Validado</strong></a>
+                        <% }else{ %>
+                            <a class="nav-link disabled">Validado</a>
+                        <% } %>
+                    </li>
+                    </li>
+                  </ul>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div style="width: 60%;margin-left: 20%;">
+        <div class="card">
+            <div class="card-body" style="height: 100%;">
+              
+                <div style="width: 50%;float: left;">
+                    <div>
+                        <label for="" style="line-height: 30px;">Empleado: </label> 
+                        <input style="width: 70%;float: right; margin-right: 10px;" type="text" value="<%= daily.name%>" disabled name="empleado" id="empleado" class="form-select">
+                    </div> 
+                    <br>
+                    <div>
+                        <label for="" style="line-height: 30px;"> Responsable: </label> 
+                        <input style="width: 70%;float: right; margin-right: 10px;" type="text"  disabled value="<%= daily.responsible%>" name="usuario" id="usuario" class="form-control">
+                    </div>
+                </div>
+    
+                <div style="width: 50%;float: right;">
+                    <div>
+                        <label for="" style="line-height: 30px;">Fecha: </label> 
+                        <input type="text" style="width: 70%;float: right; margin-right: 10px;" disabled 
+                        value="<%= daily.registration_date.getFullYear() %>-<%= String(daily.registration_date.getMonth() + 1).padStart(2, '0') %>-<%= daily.registration_date.getDate() %>" 
+                        class="form-select" name="fecha" id="fecha">
+                    </div>
+                    <br> 
+                </div>
+    <br><br><br><br>
+    <input style="display: none;" type="number" id="fila" name="fila" value="0">
+                <table id="table_employee" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;text-align: center;">Actividad</th>
+                            <th style="width: 20%;text-align: center;">Cantidad</th>
+                            <th style="width: 20%;text-align: center;">Horas</th>
+                            <th style="width: 20%;text-align: center;">Tarifa</th>
+                            <th style="width: 20%;text-align: center;">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% details.forEach(datos=>{ %>
+                            <tr>
+                                <td><%= datos.name %></td>
+                                <td style="text-align: right;"><%= datos.amount %></td>
+                                <td style="text-align: right;"><%= (Math.round(datos.hour *100))/100 %></td>
+                                <td style="text-align: right;"><%= (Math.round(datos.rate *100))/100 %></td>
+                                <td style="text-align: right;">
+                                    <% if(datos.amount > 0){ %>
+                                        <%=(Math.round((datos.rate * datos.amount) *100))/100%>
+                                    <% }else{ %>
+                                        <%=(Math.round((datos.rate * datos.hour) *100))/100%>
+                                    <% } %>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>            
+    
+            </div>
+          </div>
+    </div>
+

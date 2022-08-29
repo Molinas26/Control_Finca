@@ -1,0 +1,57 @@
+<div>
+    <%- include("../encabezado"); %>
+</div>
+<br>
+<div style="margin-left: 10px;">
+    <h3>Carga diaria borrador
+    </h3>
+
+<!--
+            <a type="button" class="btn" href="/empleado/cargar" style="background-color: rgb(11, 107, 83);color: white;">Sincronizar</a>
+-->
+
+    <a type="button" class="btn" href="/empleado/create" style="background-color: rgb(11, 107, 83);color: white;">CREAR</a>
+
+    <br><br>
+
+    <table id="datatable" class="table">
+        <thead>
+            <tr>
+                <th style="text-align: left;">Empleado</th>
+                <th style="text-align: center;">Fecha de Registro</th>
+                <th style="text-align: center;">Estado</th>
+                <th style="text-align: center;">Accion</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% employee.forEach(datos=>{ %>
+                <tr>
+                    <td><a href="/empleado/<%= datos.id%>"><%= datos.name %></a></td>
+                    <td style="text-align: center;"><a href="/empleado/<%= datos.id%>"><%= datos.registration_date.getFullYear() %>/<%= datos.registration_date.getMonth() + 1 %>/<%= datos.registration_date.getDate() %></a></td>
+                    <td style="text-align: center;">
+                        <a href="/empleado/<%= datos.id%>">
+                            <% if(datos.state == 0) {%>
+                                Borrador
+                            <% }else{ %>
+                                Validado
+                            <% } %>
+                        </a>
+                    </td>
+                    <td style="text-align: center;"><a href="editar/<%= datos.id%>">Editar</a></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+    <style>
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        a:hover{
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+
+</div>

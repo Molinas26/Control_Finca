@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+
+    <div class="login-form">
+        <h2>Iniciar Sesion</h2>
+        <form action="/login" method="post">
+            <input type="email" name="username" id="user" placeholder="Ingrese el correo electronico">
+            <label for="" style="color:red">
+                <% if (typeof mensaje === 'undefined') { %>
+                
+                <% }else{%>
+                    <%= mensaje%>
+                <% }%>
+            </label>
+            <input type="password" name="password" id="pass" placeholder="Ingrese la contraseña">
+            <input type="submit" value="Iniciar sesion" class="btn-login">
+        </form>
+    </div>
+    
+    <style>
+        body{
+            margin: auto;
+            text-align: center;
+        }
+        /* Login form */
+        .login-form, .contenedor {
+        position: absolute;
+        top: 25%;
+        left: 32%;
+        height: 30%;
+        width: 30%;
+        margin: 0 auto;
+        padding: 35px 20px 60px 20px;
+        box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+        }
+        .login-form h1 {
+        text-align: center;
+        color:midnightblue ;
+        font-size: 28px;
+        padding: 70px 0 10px 0;
+        }
+        .login-form input[type="password"],
+        .login-form input[type="email"] {
+        width: 100%;
+        padding: 15px;
+        border: 1px solid #ced4da;
+        margin-bottom: 10px;
+        box-sizing:border-box;
+        }
+        /* Estilos boton LOGIN*/
+        .btn-login{
+        width: 100%;
+        padding: 15px;
+        background-color: #6f42c1;
+        border: 0;
+        box-sizing: border-box;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: large;
+        color: #ffffff;
+        }
+        .btn-login:hover,.btn-login:active{
+        color:#fff;
+        background-color:#61428f;
+        border-color:#61428f
+        }
+        .btn-login:focus{
+        box-shadow:0 0 0 3px rgba(121,82,179,0.25)
+        }
+    </style>
+
+</body>
+</html>

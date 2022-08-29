@@ -1,0 +1,29 @@
+<div>
+    <%- include("../encabezado"); %>
+</div>
+
+<center><h3>Entrada y Salida de los empleados <%= fecha %></h3></center>
+<div>
+    <table id="datatableTest"  class="table table-striped table-bordered">
+        <thead class="bg-primary text-white" style="text-align: center;">
+            <tr>
+                <th>Empleado</th>
+                <th>Area</th>
+                <th>Sub Area</th>
+                <th>Hora de Entrada</th>
+                <th>Hora de Salida</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% lista.forEach(datos=>{ %>
+                <tr>
+                    <td><%= datos.empleado_nombre%></td>
+                    <td><%= datos.nombre_area%></td>
+                    <td><%= datos.nombre_subarea%></td>
+                    <td><%= datos.hora_entrada%></td>
+                    <td><%= datos.hora_salida%></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>

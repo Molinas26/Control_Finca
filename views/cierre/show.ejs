@@ -1,0 +1,144 @@
+<div>
+    <%- include("../encabezado"); %>
+</div>
+
+<style>
+    .btn{
+        font-size: 10px;
+        background-color: rgb(11, 107, 83);
+        color: white; 
+        width: 100px;
+    }
+    .tex{
+        font-size: 14px;
+        color: rgb(11, 107, 83);
+        text-decoration: none;
+    }
+    .card-body{
+        margin-top: -10px !important;
+        margin-bottom: -10px !important;
+    }
+</style>
+
+<script>
+    function validar(){
+        var fecha=document.getElementById('fecha').value;
+        document.getElementById('textomensaje').innerHTML = "";
+        document.getElementById('alerta2').style.display = 'block';
+        var err = 0;
+
+        if (fecha == '') {
+            document.getElementById('textomensaje').innerHTML += "La fecha no puede estar vacio<br>";
+            err++;
+        }
+        if(err == 0){
+            document.formulario1.submit();
+        }
+        
+    }
+</script>
+
+<form action="/cierrediario/create" method="POST" name="formulario1" autocomplete="off">
+    <div class="card">
+        <div class="card-body">
+            <label for="" style="color: rgb(11, 107, 83);">Cierre diario</label>
+            <br>
+            <a type="button" class="btn" href="/empleado/cargar/<%= fecha %>" style="background-color: rgb(11, 107, 83);color: white;">Sincronizar</a>
+            <a type="button" class="btn" href="/cierrediario">REGRESAR</a>
+        </div>
+    </div>
+    <% if(typeof mensaje != 'undefined'){%>
+        <script>
+            setInterval('ocultar()', 5000);
+            function ocultar(){
+                document.getElementById('alerta').style.visibility="hidden";
+            }
+        </script>
+        <div class="alert alert-danger" role="alert" id="alerta">
+        <% mensaje.forEach((validacion) => { %>
+            <strong><%= validacion %></strong><br>         
+        <% })%>
+    </div>
+    <% }else{%>
+        <br><br>
+    <% } %>
+    <div class="alert alert-danger" role="alert" id="alerta2" style="display: none;">
+        <label for="" id="textomensaje"></label>
+    </div>
+
+    <div style="width: 90%;margin-left: 5%;">
+        <div class="card">
+            <div class="card-body" style="height: 100%;">
+                <br><br>
+                <div style="width: 50%;float: left;">
+                    <div>
+                        <label for="" style="line-height: 30px;"> Responsable</label> 
+                        <input style="width: 70%;float: right; margin-right: 10px;" readonly
+                        name="usuario" id="usuario" class="form-control" value="<%= responsable %>">
+                    </div>
+                </div>
+    
+                <div style="width: 50%;float: right;">
+                        <div>
+                            <label for="" style="line-height: 30px;">Fecha</label> 
+                            <input type="text" readonly style="width: 70%;float: right; margin-right: 10px;" 
+                            class="form-control" name="fecha" id="fecha"value="<%= fecha %>">
+                        </div>
+                </div>
+
+    <br><br>
+    <input style="display: none;" type="number" id="fila" name="fila" value="0">
+    <table id="table_employee" class="table table-bordered">
+        <thead>
+            <tr>
+                <th style="width: 15%;text-align: center;">Empleado</th>
+                <th style="width: 10%;text-align: center;">Unidades producidas</th>
+                <th style="width: 10%;text-align: center;">Pago por produccion</th>
+
+                <th style="width: 7%;text-align: center;">Horas al dia</th>
+                <th style="width: 10%;text-align: center;">Pago por hora</th>
+
+                <th style="width: 7%;text-align: center;">Horas extra 25%</th>
+                <th style="width: 7%;text-align: center;">Horas extra 50%</th>
+                <th style="width: 7%;text-align: center;">Horas extra 75%</th>
+                <th style="width: 8%;text-align: center;">Horas extra 100%</th>
+                <th style="width: 9%;text-align: center;">Pago por hora extra</th>
+
+
+                <th style="width: 10%;text-align: center;">Total a pagar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if(typeof daily != 'undefined'){%>
+                <% daily.forEach(datos=>{ %>
+                    <tr>
+                        <td><%= datos.name %></td>
+                        <td style="text-align: right;"><%= datos.produccion %></td>
+                        <td style="text-align: right;"><%= (Math.round(datos.totalproduccion *100))/100 %></td>
+
+                        <td style="text-align: right;"><%= datos.horas %></td>
+                        <td style="text-align: right;"><%= (Math.round(datos.totalhoras *100))/100 %></td>
+
+                        <td style="text-align: right;"><%= (Math.round(datos.extra25 *100))/100 %></td>
+                        <td style="text-align: right;"><%= (Math.round(datos.extra50 *100))/100 %></td>
+                        <td style="text-align: right;"><%= (Math.round(datos.extra75 *100))/100 %></td>
+                        <td style="text-align: right;"><%= (Math.round(datos.extra100 *100))/100 %></td>
+                        <td style="text-align: right;"><%= (Math.round(datos.totalhorasextras *100))/100 %></td>
+
+                        <td style="text-align: right;"><%= (Math.round(datos.totalpagar *100))/100 %></td>
+
+                    </tr>
+                <% }) %>
+            <%}else{%>
+                <tr>
+                    <td colspan="11">Esperando datos</td>
+                </tr>
+            <%}%>
+        </tbody>
+    </table>            
+
+    
+            </div>
+          </div>
+    </div>
+</form>

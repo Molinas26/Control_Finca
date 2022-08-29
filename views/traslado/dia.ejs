@@ -1,0 +1,108 @@
+<div>
+    <%- include("../encabezado"); %>
+</div>
+
+<div class="card border-" style="width: 45%;float: left;margin-bottom: 3%;">
+    <div class="card-header bg-info">Datos Generales</div>
+    <div class="card-body">
+            <div class="mb-3">
+                <label style="float: left;line-height: 35px;width: 40%"  for="">Nombre de empleado: </label>
+                <input style="float: right;width: 60%;" type="text" class="form-control" disabled value="<%= empleado.empleado_nombre %>">
+            </div>
+            <br><br>
+            <div class="mb-3">
+                <input style="float: right;width: 60%;" type="text" class="form-control" disabled value="<%= empleado.hora_entrada %>">
+                <label style="float: left;line-height: 35px;width: 40%"  for="">Hora de entrada: </label>
+            </div>
+    </div>
+</div>
+
+<div class="card border-info" style="width: 45%;float: right;margin-bottom: 3%;">
+    <div class="card-header bg-info">Area actual</div>
+    <div class="card-body">
+            <div class="mb-3">
+                <label style="float: left;line-height: 35px;width: 40%"  for="">Area: </label>
+                <input style="float: right;width: 60%;" type="text" class="form-control" disabled value="<%= empleado.nombre_area %>">
+            </div>
+            <br><br>
+            <div class="mb-3">
+                <input style="float: right;width: 60%;" type="text" class="form-control" disabled value="<%= empleado.nombre_subarea %>">
+                <label style="float: left;line-height: 35px;width: 40%"  for="">Sub area: </label>
+            </div>
+    </div>
+</div>
+
+<div class="card border-info" style="float: left; width: 100%;margin-bottom: 3%;">
+    <div class="card-header bg-info">Nueva area</div>
+    <form action="/programacion/save" method="POST"></form>
+    <div class="card-body">
+            <div class="mb-3">
+                <label style="float: left;line-height: 35px;width: 20%"  for="">Area: </label>
+                <select style="float: right;width: 80%;" name="area" id="area" class="form-select" onchange="cambio()">
+                    <option style="display: none;" value="">Seleccione</option>
+                    <% areas.forEach(datos=>{ %>
+                        <option value="<%= datos.id %>"><%= datos.nombre_area %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <br><br>
+            <div class="mb-3">
+                <select style="float: right;width: 80%;" name="subarea" id="subarea" class="form-select">
+                    <option style="display: none;" value="">Seleccione</option>
+                </select>
+                <label style="float: left;line-height: 35px;width: 20%"  for="">Sub area: </label>
+            </div>
+            <br><br>
+            <div class="mb-3">
+                <input style="float: right;width: 80%;" type="text" name="justificacion" id="justificacion" class="form-control"  placeholder="Ingrese la justificacion">
+                <label style="float: left;line-height: 35px;width: 20%"  for="">Justificacion: </label>
+            </div>
+            <br><br>
+            <div class="mb-3">
+                <input style="float: right;width: 80%;" type="time" class="form-control" name="hora" id="hora" placeholder="Ingrese la hora">
+                <label style="float: left;line-height: 35px;width: 20%"  for="">Hora del cambio: </label>
+            </div>
+            <div class="mb-3">
+                <input style="float: right;width: 80%;display: none;" type="text" name="empleado" id="empleado" class="form-control"  value="<%= empleado.id %>">
+            </div>
+    </div>
+</div>
+
+<div style="float: left;">
+    <button type="submit" class="btn btn-primary" tabindex="5">Guardar</button>
+    <a href="/control/subarea/<%=empleado.id_subarea%>" class="btn btn-secondary">Cancelar</a>
+</div>
+
+</form>
+<script>
+    //agregar campos al select de sub areas
+function cambio(){
+    var selectnw = document.getElementById("subarea");
+
+    var i, L = selectnw.options.length - 1; 
+    for(i = L; i >= 0; i--) { selectnw.remove(i); }
+
+    var select = document.getElementById("area");
+    var valor = select.value;
+
+    <% subareas.forEach(sa=>{ %>
+        if(<%= sa.id_area%> == valor){
+
+            // creando la nueva option
+            var opt = document.createElement('option');
+
+            // Añadiendo texto al elemento (opt)
+            opt.innerHTML = "<%= sa.nombre_subarea%>";
+
+            //Añadiendo un valor al elemento (opt)
+            opt.value = "<%= sa.id%>";
+
+            // Añadiendo opt al final del selector (sel)
+            selectnw.appendChild(opt);
+        }
+        
+    <% }) %>
+        
+}
+
+</script>

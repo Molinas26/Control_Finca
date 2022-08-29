@@ -1,0 +1,22 @@
+<div>
+    <%- include("../encabezado"); %>
+</div>
+
+<center><h2>Areas de costeo</h2></center>
+<br><br>
+<% areas.forEach(datos=>{ %>
+
+    <a href="control/<%= datos.id%>">
+        <div style="float: left;border: solid;margin-left: 2.5%;margin-bottom: 5%; width: 30%;height: 45%;" >
+            <div class="w3-card-4">
+                <div style="border: solid 1px;">
+                    <img src="img/area/<%= datos.nombre_area%>.jpg" alt="Alps" width="100%" height="100%">
+                </div>
+                <div class="w3-container w3-center">
+                  <center><strong><p><%= datos.nombre_area%></p></strong></center>
+                </div>
+            </div>
+        </div>
+    </a>
+
+<% }) %>

@@ -1,0 +1,35 @@
+<div>
+    <%- include("../encabezado"); %>
+</div>
+
+<style>
+    a{
+        text-decoration: none;
+        color: black;
+    }
+</style>
+<br>
+<div style="margin-left: 10px;">
+    <h3>Cierre diario borrador</h3>
+
+    <a type="button" class="btn" href="/cierrediario/create" style="background-color: rgb(11, 107, 83);color: white;">CREAR</a>
+
+    <br><br>
+
+    <table id="datatable" class="table">
+        <thead>
+            <tr>
+                <th style="text-align: left;">Fecha de Registro</th>
+                <th style="text-align: center;">Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% lista.forEach(datos=>{ %>
+                <tr>
+                    <td><a href="/cierrediario/detalle/<%= datos.id %>/<%= datos.registration_date.getFullYear() %>-<%= datos.registration_date.getMonth() + 1 %>-<%= datos.registration_date.getDate() %>"><%= datos.registration_date.getFullYear() %>/<%= datos.registration_date.getMonth() + 1 %>/<%= datos.registration_date.getDate() %></a></td>
+                    <td><a href="/cierrediario/detalle/<%= datos.id %>/<%= datos.registration_date.getFullYear() %>-<%= datos.registration_date.getMonth() + 1 %>-<%= datos.registration_date.getDate() %>">Borrador</a></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>

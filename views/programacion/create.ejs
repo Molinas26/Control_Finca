@@ -1,0 +1,105 @@
+<div>
+    <%- include("../encabezado"); %>
+</div>
+<form action="/programacion/save" method="POST">
+    <div>
+        <div style="width: 70em;">
+            <label style="float: left;line-height: 35px;width: 20%;" for="">Seleccione un area de costeo: </label>
+            <select style="float: right;width: 80%;" name="area" id="area" class="form-select" onchange="cambio()">
+                <option style="display: none;" value="">Seleccione</option>
+                <% areas.forEach(datos=>{ %>
+                    <option value="<%= datos.id %>"><%= datos.nombre_area %></option>
+                <% }) %>
+            </select>
+        </div>
+        <br><br>
+        <div style="width: 70em;">
+            <label style="float: left;line-height: 35px;width: 20%"  for="">Seleccione la tarea: </label>
+            <select style="float: right;width: 80%;" name="subarea" id="subarea" class="form-select">
+                <option style="display: none;" value="">Seleccione</option>
+            </select>
+        </div>
+        <br><br>
+        <div style="width: 70em;">
+            <label style="float: left;line-height: 35px;width: 20%"  for="">Fecha: </label>
+            <input style="float: right;width: 80%;" type="text" class="form-control" disabled value="<%= fecha %>">
+        </div>
+        <div>
+            <input style="display: none;" type="text" name="empleados" id="empleados">
+        </div>
+    
+        <div style="margin-left: 20%;width: 80%;">
+            
+            
+            <br>
+            <table id="datatableTest"  class="table table-striped table-bordered">
+                <thead class="bg-primary text-white" style="text-align: center;">
+                    <tr>
+                        <th style="width: 10%;">Seleccionar</th>
+                        <th>Empleado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% empleados.forEach(datos=>{ %>
+                        <tr>
+                            <td style="text-align: center;"><input class="form-check-input" type="checkbox" onclick="check(<%= datos.id%>)" 
+                                id="emp<%= datos.id%>"></td>
+                            <td><%= datos.nombres_empleado%> <%= datos.apellidos_empleado%></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    
+        <div>
+            <button type="submit" class="btn btn-primary" tabindex="5">Guardar</button>
+            <a href="/programacion" class="btn btn-secondary">Cancelar</a>
+        </div>
+        <br><br>   
+    </div>
+</form>
+
+<script>
+    //recuperar el empleado
+function check(valor){
+    var text = document.getElementById("empleados");
+    text.value = "";
+    <% empleados.forEach(datos=>{ %>
+        var checkBox2 = document.getElementById("emp"+<%= datos.id%>);
+        if(checkBox2.checked == true){
+            text.value = <%= datos.id%>+","+text.value;                     
+        }
+    <% }) %>
+}
+
+//agregar campos al select de sub areas
+function cambio(){
+    var selectnw = document.getElementById("subarea");
+
+    var i, L = selectnw.options.length - 1; 
+    for(i = L; i >= 0; i--) { selectnw.remove(i); }
+
+    var select = document.getElementById("area");
+    var valor = select.value;
+
+    <% subareas.forEach(sa=>{ %>
+        if(<%= sa.id_area%> == valor){
+
+            // creando la nueva option
+            var opt = document.createElement('option');
+
+            // Añadiendo texto al elemento (opt)
+            opt.innerHTML = "<%= sa.nombre_subarea%>";
+
+            //Añadiendo un valor al elemento (opt)
+            opt.value = "<%= sa.id%>";
+
+            // Añadiendo opt al final del selector (sel)
+            selectnw.appendChild(opt);
+        }
+        
+    <% }) %>
+        
+}
+
+</script>

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="es">
+<!--
+  Plantilla inicial de Bootstrap 4
+  @author parzibyte
+  Visita: parzibyte.me/blog
+-->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Conexión PostgreSQL y Node usando Express y Bootstrap">
+    <meta name="author" content="Parzibyte">
+    <title>Camacho finca</title>
+    <!-- Cargar el CSS de Boostrap-->
+    <link href="/resources/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <script src="/resources/js/jquery.js"></script>
+<link rel="stylesheet" href="/resources/css/bootstrap.css">
+
+    <link rel="stylesheet" href="/resources/css/icons.css">
+
+    <script src="/resources/js/bootstrap.bundle.min.js"  crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- include the RTL css files-->
+<link rel="stylesheet" href="/resources/css/alertify.rtl.css">
+<link rel="stylesheet" href="/resources/css/themes/default.rtl.css">
+
+<!-- include alertify script -->
+<script src="/resources/js/alertify.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/resources/css/datatables.min.css"/>
+ 
+<script type="text/javascript" src="/resources/js/datatables.min.js"></script>
+
+<script>
+    $(document).ready( function () {
+    $('#datatable').DataTable();
+} );
+</script>
+
+</head>
+
+<body>
+    <!-- Definición del menú -->
+    <nav class="navbar navbar-expand-md navbar-dark  fixed-top" style="background-color: rgb(145, 72, 135);width: 100%;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-grid-3x3-gap-fill" viewBox="0 0 16 16" style="color: white">
+                <path d="M1 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V2zM1 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V7zM1 12a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm5 0a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-2z"/>
+              </svg>
+        <a class="navbar-brand" href="/" > Finca</a>
+        <button aria-label="Mostrar u ocultar menú" class="navbar-toggler" id="botonMenu" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav mr-auto" style="float: left;width: 80%;">
+                        <li class="nav-item" style="display: none;">
+                            <a class="nav-link" href="/programacion">Programacion</a>
+                        </li>
+                        <li class="nav-item" style="display: none;">
+                            <a class="nav-link" href="/asistencia">Entrada y Salida</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Control de empleados
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                              <li><a class="dropdown-item" href="/empleado/pendiente">Carga diaria(borrador)</a></li>
+                              <li><a class="dropdown-item" href="/empleado/sincronizado">Carga diaria(sincronizados)</a></li>
+                              <li><a class="dropdown-item" href="/cierrediario">Cierre diario(borrador)</a></li>
+                              <li><a class="dropdown-item" href="/cierrediario/validado">Cierre diario(sincronizado)</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              Configuraciones
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                              <li><a class="dropdown-item" href="/configuracion/empleados">Empleados</a></li>
+                              <li><a class="dropdown-item" href="/configuracion/actividades">Actividad</a></li>
+                            </ul>
+                        </li>
+                </ul>
+                <ul class="navbar-nav mr-auto" style="float: right; text-align: right;width: 20%;">
+                    <li class="nav-item dropdown" >
+                        <a class="nav-link dropdown-toggle" href="#" id="navbaruser" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
+                          <%= user.name%>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbaruser">
+                          <li><a class="dropdown-item" href="/logout">Cerrar Sesion</a></li>
+                        </ul>
+                    </li>
+                </ul>
+    </nav>
+    
+    <script type="text/javascript">
+        // Tomado de https://github.com/parzibyte/cotizaciones_web/blob/master/js/cotizaciones.js#L2
+        document.addEventListener("DOMContentLoaded", () => {
+            const menu = document.querySelector("#menu"),
+                botonMenu = document.querySelector("#botonMenu");
+            if (menu) {
+                botonMenu.addEventListener("click", () => menu.classList.toggle("show"));
+            }
+        });
+
+        //funcion de datable
+$(document).ready(function() {
+    $('#datatableTest').DataTable({
+        fixedHeader: true,
+        searching: true,
+        dom: 'Bfrtip',
+        buttons: [],
+        pageLength: 100,
+        language: {
+        search: 'Buscar',
+        zeroRecords: 'No hay registros para mostrar.',
+        emptyTable: 'La tabla está vacia.',
+        info: "Mostrando _START_ de _END_ de _TOTAL_ Registros.",
+        infoFiltered: "(Filtrados de _MAX_ Registros.)",
+        paginate: {
+            first: 'Primero',
+            previous: 'Anterior',
+            next: 'Siguiente',
+            last: 'Último'
+        }
+        }
+    });
+});
+
+    </script>
+    <!-- Termina la definición del menú -->
+            <br><br>
+            
